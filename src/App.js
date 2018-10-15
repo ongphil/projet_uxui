@@ -15,30 +15,29 @@ import { faHotel } from "@fortawesome/free-solid-svg-icons";
 import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
 import { faWrench } from "@fortawesome/free-solid-svg-icons";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
-import AttractionComponent from "./components/pages/AttractionComponent";
-import BatimentComponent from "./components/pages/BatimentComponent";
+import AttractionsComponent from "./components/pages/AttractionsComponent";
+import BatimentsComponent from "./components/pages/BatimentsComponent";
 import PersonnelComponent from "./components/pages/PersonnelComponent";
-import MaintenanceComponent from "./components/pages/MaintenanceComponent";
-import StatComponent from "./components/pages/StatComponent";
-import logo from './resources/images/logo.png';
+import MaintenancesComponent from "./components/pages/MaintenancesComponent";
+import StatsComponent from "./components/pages/StatsComponent";
+import logo from "./resources/images/logo.png";
 import "./App.css";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      currentPage: 'main'
+      currentPage: "main"
     };
 
     this.changePage = this.changePage.bind(this);
   }
 
   changePage(page) {
-    console.log(page);
     this.setState({
       currentPage: page
     });
-  };
+  }
 
   render() {
     return (
@@ -48,8 +47,13 @@ class App extends Component {
             <header className="App-header">
               <div>
                 <Navbar className="App-navbar" expand="md">
-                  <NavbarBrand className="App-navbarbrand" tag={Link} to="/" onClick={()=>this.changePage('home')}>
-                  <img src={logo} alt="logo" height="32" />
+                  <NavbarBrand
+                    className="App-navbarbrand"
+                    tag={Link}
+                    to="/"
+                    onClick={() => this.changePage("home")}
+                  >
+                    <img src={logo} alt="logo" height="32" />
                   </NavbarBrand>
                 </Navbar>
               </div>
@@ -62,74 +66,109 @@ class App extends Component {
                       <NavLink
                         tag={Link}
                         to="/attractions"
-                        className={`App-navlink mx-1 ${this.state.currentPage==='attractions'?'App-navlink-selected':''}`}
-                        onClick={() => this.changePage('attractions')}
+                        className={`App-navlink mx-1 ${
+                          this.state.currentPage === "attractions"
+                            ? "App-navlink-selected"
+                            : ""
+                        }`}
                       >
-                        <span className="navbar-item">
-                          <FontAwesomeIcon
-                            icon={faSpaceShuttle}
-                            className="mr-2"
-                          />
+                      <Row className="navbar-item">
+                        <Col xs="2">
+                        <FontAwesomeIcon
+                          icon={faSpaceShuttle}
+                          className="mr-2"
+                        />
+                        </Col>
+                        <Col xs="auto">
                           Attractions
-                        </span>
+                        </Col>
+                      </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         tag={Link}
                         to="/batiments"
-                        className={`App-navlink mx-1 ${this.state.currentPage==='batiments'?'App-navlink-selected':''}`}
-                        onClick={() => this.changePage('batiments')}
+                        className={`App-navlink mx-1 ${
+                          this.state.currentPage === "batiments"
+                            ? "App-navlink-selected"
+                            : ""
+                        }`}
                       >
-                        <span className="navbar-item">
-                          <FontAwesomeIcon icon={faHotel} className="mr-2" />
+                      <Row className="navbar-item">
+                        <Col xs="2">
+                        <FontAwesomeIcon icon={faHotel} className="mr-2" />
+                        </Col>
+                        <Col xs="auto">
                           Bâtiments
-                        </span>
+                        </Col>
+                      </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         tag={Link}
                         to="/personnel"
-                        className={`App-navlink mx-1 ${this.state.currentPage==='personnel'?'App-navlink-selected':''}`}
-                        onClick={() => this.changePage('personnel')}
+                        className={`App-navlink mx-1 ${
+                          this.state.currentPage === "personnel"
+                            ? "App-navlink-selected"
+                            : ""
+                        }`}
                       >
-                        <span className="navbar-item">
-                          <FontAwesomeIcon
-                            icon={faUserFriends}
-                            className="mr-2"
-                          />
+                      <Row className="navbar-item">
+                        <Col xs="2">
+                        <FontAwesomeIcon
+                          icon={faUserFriends}
+                          className="mr-2"
+                        />
+                        </Col>
+                        <Col xs="auto">
                           Personnel
-                        </span>
+                        </Col>
+                      </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         tag={Link}
                         to="/maintenances"
-                        className={`App-navlink mx-1 ${this.state.currentPage==='maintenances'?'App-navlink-selected':''}`}
-                        onClick={() => this.changePage('maintenances')}
+                        className={`App-navlink mx-1 ${
+                          this.state.currentPage === "maintenances"
+                            ? "App-navlink-selected"
+                            : ""
+                        }`}
                       >
-                        <span className="navbar-item">
+                      <Row className="navbar-item">
+                        <Col xs="2">
                           <FontAwesomeIcon icon={faWrench} className="mr-2" />
+                        </Col>
+                        <Col xs="auto">
                           Maintenances
-                        </span>
+                        </Col>
+                      </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         tag={Link}
                         to="/stats"
-                        className={`App-navlink mx-1 ${this.state.currentPage==='stats'?'App-navlink-selected':''}`}
-                        onClick={() => this.changePage('stats')}
+                        className={`App-navlink mx-1 ${
+                          this.state.currentPage === "stats"
+                            ? "App-navlink-selected"
+                            : ""
+                        }`}
                       >
-                        <span className="navbar-item">
-                          <FontAwesomeIcon
-                            icon={faChartLine}
-                            className="mr-2"
-                          />
-                          Stats
-                        </span>
+                        <Row className="navbar-item">
+                          <Col xs="2">
+                            <FontAwesomeIcon
+                              icon={faChartLine}
+                              className="mr-2"
+                            />
+                          </Col>
+                          <Col xs="auto">
+                            Stats
+                          </Col>
+                        </Row>
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -138,21 +177,49 @@ class App extends Component {
                   <Route
                     exact
                     path="/attractions"
-                    component={() => <AttractionComponent />}
+                    component={() => (
+                      <AttractionsComponent
+                        currentPage={this.state.currentPage}
+                        changePage={this.changePage}
+                      />
+                    )}
                   />
                   <Route
                     path="/batiments"
-                    component={() => <BatimentComponent />}
+                    component={() => (
+                      <BatimentsComponent
+                        currentPage={this.state.currentPage}
+                        changePage={this.changePage}
+                      />
+                    )}
                   />
                   <Route
                     path="/personnel"
-                    component={() => <PersonnelComponent />}
+                    component={() => (
+                      <PersonnelComponent
+                        currentPage={this.state.currentPage}
+                        changePage={this.changePage}
+                      />
+                    )}
                   />
                   <Route
                     path="/maintenances"
-                    component={() => <MaintenanceComponent />}
+                    component={() => (
+                      <MaintenancesComponent
+                        currentPage={this.state.currentPage}
+                        changePage={this.changePage}
+                      />
+                    )}
                   />
-                  <Route path="/stats" component={() => <StatComponent />} />
+                  <Route
+                    path="/stats"
+                    component={() => (
+                      <StatsComponent
+                        currentPage={this.state.currentPage}
+                        changePage={this.changePage}
+                      />
+                    )}
+                  />
                 </Col>
               </Row>
             </div>

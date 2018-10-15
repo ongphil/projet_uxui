@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import Attraction from '../../classes/Attraction';
 
 class AttractionComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpen: false
-    };
+  }
+
+  componentDidMount() {
+    if(this.props.currentPage!=='attractions') {
+      this.props.changePage('attractions');
+    }
   }
 
   render() {

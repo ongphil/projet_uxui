@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 class MaintenanceComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpen: false
-    };
+  }
+
+  componentDidMount() {
+    if(this.props.currentPage!=='maintenances') {
+      this.props.changePage('maintenances');
+    }
   }
 
   render() {
