@@ -1,7 +1,6 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 class Stat {
-
   constructor(date, nb_visitors, receipts) {
     // invokes the setter
     this.id = uuidv4();
@@ -23,6 +22,15 @@ class Stat {
   getReceipts() {
     return this.receipts;
   }
+  getAttributes() {
+    let obj = {
+      id: this.id,
+      date: this.date,
+      nb_visitors: this.nb_visitors,
+      receipts: this.receipts
+    };
+    return obj;
+  }
 
   /// SETTERS
   setDate(value) {
@@ -34,7 +42,6 @@ class Stat {
   setReceipts(value) {
     this.receipts = value;
   }
-
 }
 
 export default Stat;

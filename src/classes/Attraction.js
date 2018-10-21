@@ -1,7 +1,6 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 class Attraction {
-
   constructor(name, date_installation, price) {
     // invokes the setter
     this.id = uuidv4();
@@ -23,6 +22,15 @@ class Attraction {
   getPrice() {
     return this.price;
   }
+  getAttributes() {
+    const obj = {
+      id: this.id,
+      name: this.name,
+      date_installation: this.date_installation,
+      price: this.price
+    };
+    return obj;
+  }
 
   /// SETTERS
   setName(value) {
@@ -34,7 +42,6 @@ class Attraction {
   setPrice(value) {
     this.price = value;
   }
-
 }
 
 export default Attraction;

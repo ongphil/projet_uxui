@@ -1,7 +1,6 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 class Batiment {
-
   constructor(name, date_installation) {
     // invokes the setter
     this.id = uuidv4();
@@ -19,6 +18,14 @@ class Batiment {
   getDate() {
     return this.date_installation;
   }
+  getAttributes() {
+    const obj = {
+      id: this.id,
+      name: this.name,
+      date_installation: this.date_installation
+    };
+    return obj;
+  }
 
   /// SETTERS
   setName(value) {
@@ -27,7 +34,6 @@ class Batiment {
   setDate(value) {
     this.date_installation = value;
   }
-
 }
 
 export default Batiment;

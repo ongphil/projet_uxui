@@ -1,7 +1,6 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 class Maintenance {
-
   constructor(last_date, next_date, attraction, technicien) {
     // invokes the setter
     this.id = uuidv4();
@@ -27,6 +26,16 @@ class Maintenance {
   getTechnicien() {
     return this.technicien;
   }
+  getAttributes() {
+    let obj = {
+      id: this.id,
+      last_date: this.last_date,
+      next_date: this.next_date,
+      attraction: this.attraction,
+      technicien: this.technicien
+    };
+    return obj;
+  }
 
   /// SETTERS
   setLastDate(value) {
@@ -41,7 +50,6 @@ class Maintenance {
   setTechnicien(value) {
     this.technicien = value;
   }
-
 }
 
 export default Maintenance;

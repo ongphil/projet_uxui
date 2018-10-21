@@ -10,7 +10,7 @@ import {
   Button
 } from "reactstrap";
 import Attraction from "../../classes/Attraction";
-import "../../resources/style/AttractionsComponent.css";
+import "../../resources/style/DataArray.css";
 
 class AttractionComponent extends Component {
   constructor(props) {

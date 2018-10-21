@@ -15,11 +15,7 @@ import { faHotel } from "@fortawesome/free-solid-svg-icons";
 import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
 import { faWrench } from "@fortawesome/free-solid-svg-icons";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
-import AttractionsComponent from "./components/pages/AttractionsComponent";
-import BatimentsComponent from "./components/pages/BatimentsComponent";
-import PersonnelComponent from "./components/pages/PersonnelComponent";
-import MaintenancesComponent from "./components/pages/MaintenancesComponent";
-import StatsComponent from "./components/pages/StatsComponent";
+import DataArray from "./components/DataArray";
 import logo from "./resources/images/logo.png";
 import "./App.css";
 
@@ -27,7 +23,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: "main"
+      currentPage: "main",
+      currentNavItemSelected: "main"
     };
 
     this.changePage = this.changePage.bind(this);
@@ -35,7 +32,7 @@ class App extends Component {
 
   changePage(page) {
     this.setState({
-      currentPage: page
+      currentNavItemSelected: page
     });
   }
 
@@ -67,22 +64,20 @@ class App extends Component {
                         tag={Link}
                         to="/attractions"
                         className={`App-navlink mx-1 ${
-                          this.state.currentPage === "attractions"
+                          this.state.currentNavItemSelected === "attractions"
                             ? "App-navlink-selected"
                             : ""
                         }`}
                       >
-                      <Row className="navbar-item">
-                        <Col xs="2">
-                        <FontAwesomeIcon
-                          icon={faSpaceShuttle}
-                          className="mr-2"
-                        />
-                        </Col>
-                        <Col xs="auto">
-                          Attractions
-                        </Col>
-                      </Row>
+                        <Row className="navbar-item">
+                          <Col xs="2">
+                            <FontAwesomeIcon
+                              icon={faSpaceShuttle}
+                              className="mr-2"
+                            />
+                          </Col>
+                          <Col xs="auto">Attractions</Col>
+                        </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -90,19 +85,17 @@ class App extends Component {
                         tag={Link}
                         to="/batiments"
                         className={`App-navlink mx-1 ${
-                          this.state.currentPage === "batiments"
+                          this.state.currentNavItemSelected === "batiments"
                             ? "App-navlink-selected"
                             : ""
                         }`}
                       >
-                      <Row className="navbar-item">
-                        <Col xs="2">
-                        <FontAwesomeIcon icon={faHotel} className="mr-2" />
-                        </Col>
-                        <Col xs="auto">
-                          Bâtiments
-                        </Col>
-                      </Row>
+                        <Row className="navbar-item">
+                          <Col xs="2">
+                            <FontAwesomeIcon icon={faHotel} className="mr-2" />
+                          </Col>
+                          <Col xs="auto">Bâtiments</Col>
+                        </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -110,22 +103,20 @@ class App extends Component {
                         tag={Link}
                         to="/personnel"
                         className={`App-navlink mx-1 ${
-                          this.state.currentPage === "personnel"
+                          this.state.currentNavItemSelected === "personnel"
                             ? "App-navlink-selected"
                             : ""
                         }`}
                       >
-                      <Row className="navbar-item">
-                        <Col xs="2">
-                        <FontAwesomeIcon
-                          icon={faUserFriends}
-                          className="mr-2"
-                        />
-                        </Col>
-                        <Col xs="auto">
-                          Personnel
-                        </Col>
-                      </Row>
+                        <Row className="navbar-item">
+                          <Col xs="2">
+                            <FontAwesomeIcon
+                              icon={faUserFriends}
+                              className="mr-2"
+                            />
+                          </Col>
+                          <Col xs="auto">Personnel</Col>
+                        </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -133,19 +124,17 @@ class App extends Component {
                         tag={Link}
                         to="/maintenances"
                         className={`App-navlink mx-1 ${
-                          this.state.currentPage === "maintenances"
+                          this.state.currentNavItemSelected === "maintenances"
                             ? "App-navlink-selected"
                             : ""
                         }`}
                       >
-                      <Row className="navbar-item">
-                        <Col xs="2">
-                          <FontAwesomeIcon icon={faWrench} className="mr-2" />
-                        </Col>
-                        <Col xs="auto">
-                          Maintenances
-                        </Col>
-                      </Row>
+                        <Row className="navbar-item">
+                          <Col xs="2">
+                            <FontAwesomeIcon icon={faWrench} className="mr-2" />
+                          </Col>
+                          <Col xs="auto">Maintenances</Col>
+                        </Row>
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -153,7 +142,7 @@ class App extends Component {
                         tag={Link}
                         to="/stats"
                         className={`App-navlink mx-1 ${
-                          this.state.currentPage === "stats"
+                          this.state.currentNavItemSelected === "stats"
                             ? "App-navlink-selected"
                             : ""
                         }`}
@@ -165,9 +154,7 @@ class App extends Component {
                               className="mr-2"
                             />
                           </Col>
-                          <Col xs="auto">
-                            Stats
-                          </Col>
+                          <Col xs="auto">Stats</Col>
                         </Row>
                       </NavLink>
                     </NavItem>
@@ -178,45 +165,87 @@ class App extends Component {
                     exact
                     path="/attractions"
                     component={() => (
-                      <AttractionsComponent
-                        currentPage={this.state.currentPage}
+                      <DataArray
+                        currentPage="Attractions"
+                        currentNavItemSelected={
+                          this.state.currentNavItemSelected
+                        }
                         changePage={this.changePage}
+                        headlings={["Nom", "Date", "Prix", " "]}
                       />
                     )}
                   />
                   <Route
+                    exact
                     path="/batiments"
                     component={() => (
-                      <BatimentsComponent
-                        currentPage={this.state.currentPage}
+                      <DataArray
+                        currentPage="Bâtiments"
+                        currentNavItemSelected={
+                          this.state.currentNavItemSelected
+                        }
                         changePage={this.changePage}
+                        headlings={["Nom", "Date", " "]}
                       />
                     )}
                   />
                   <Route
+                    exact
                     path="/personnel"
                     component={() => (
-                      <PersonnelComponent
-                        currentPage={this.state.currentPage}
+                      <DataArray
+                        currentPage="Personnel"
+                        currentNavItemSelected={
+                          this.state.currentNavItemSelected
+                        }
                         changePage={this.changePage}
+                        headlings={[
+                          "Nom",
+                          "Prénom",
+                          "Age",
+                          "Fonction",
+                          "Salaire",
+                          " "
+                        ]}
                       />
                     )}
                   />
                   <Route
+                    exact
                     path="/maintenances"
                     component={() => (
-                      <MaintenancesComponent
-                        currentPage={this.state.currentPage}
+                      <DataArray
+                        currentPage="Maintenances"
+                        currentNavItemSelected={
+                          this.state.currentNavItemSelected
+                        }
                         changePage={this.changePage}
+                        headlings={[
+                          "Dernière maintenance",
+                          "Prochaine maintenance",
+                          "Attraction",
+                          "Technicien",
+                          " "
+                        ]}
                       />
                     )}
                   />
                   <Route
+                    exact
                     path="/stats"
                     component={() => (
-                      <StatsComponent
-                        currentPage={this.state.currentPage}
+                      <DataArray
+                        currentPage="Stats"
+                        currentNavItemSelected={
+                          this.state.currentNavItemSelected
+                        }
                         changePage={this.changePage}
+                        headlings={[
+                          "Date",
+                          "Nombre de visiteurs",
+                          "Recette",
+                          " "
+                        ]}
                       />
                     )}
                   />

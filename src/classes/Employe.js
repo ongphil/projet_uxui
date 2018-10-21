@@ -1,7 +1,6 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 class Employe {
-
   constructor(last_name, first_name, age, job, salary) {
     // invokes the setter
     this.id = uuidv4();
@@ -31,6 +30,17 @@ class Employe {
   getSalary() {
     return this.salary;
   }
+  getAttributes() {
+    let obj = {
+      id: this.id,
+      last_name: this.last_name,
+      first_name: this.first_name,
+      age: this.age,
+      job: this.job,
+      salary: this.salary
+    };
+    return obj;
+  }
 
   /// SETTERS
   setLastName(value) {
@@ -48,7 +58,6 @@ class Employe {
   setSalary(value) {
     this.salary = value;
   }
-
 }
 
 export default Employe;
