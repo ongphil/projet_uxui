@@ -10,11 +10,13 @@ import {
   NavLink
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpaceShuttle } from "@fortawesome/free-solid-svg-icons";
-import { faHotel } from "@fortawesome/free-solid-svg-icons";
-import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
-import { faWrench } from "@fortawesome/free-solid-svg-icons";
-import { faChartLine } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpaceShuttle,
+  faHotel,
+  faUserFriends,
+  faWrench,
+  faChartLine
+} from "@fortawesome/free-solid-svg-icons";
 import DataArray from "./components/DataArray";
 import logo from "./resources/images/logo.png";
 import "./App.css";
@@ -171,7 +173,7 @@ class App extends Component {
                           this.state.currentNavItemSelected
                         }
                         changePage={this.changePage}
-                        headlings={["Nom", "Date", "Prix", " "]}
+                        headlings={["Nom", "Date", "Prix (€)", " "]}
                       />
                     )}
                   />
@@ -204,7 +206,7 @@ class App extends Component {
                           "Prénom",
                           "Age",
                           "Fonction",
-                          "Salaire",
+                          "Salaire (€ brut)",
                           " "
                         ]}
                       />

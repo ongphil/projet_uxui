@@ -7,23 +7,26 @@ import {
   CardHeader,
   CardBody,
   Table,
-  Button
+  Button,
+  Input,
+  InputGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
-import moment from "moment";
-import localization from "moment/locale/fr";
-import Attraction from "../classes/Attraction";
-import Batiment from "../classes/Batiment";
-import Maintenance from "../classes/Maintenance";
-import Employe from "../classes/Employe";
-import Stat from "../classes/Stat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import DataArrayRow from "./DataArrayRow";
 import ArrayAddModal from "./ArrayAddModal";
+import ArrayEditModal from "./ArrayEditModal";
 import "../resources/style/DataArray.css";
+const uuidv4 = require("uuid/v4");
 
 class DataArray extends Component {
   constructor(props) {
     super(props);
-    console.log(JSON.parse(localStorage.getItem("allAttractions")));
+
     this.state = {
       allAttractions:
         localStorage.getItem("allAttractions") !== null
@@ -45,13 +48,26 @@ class DataArray extends Component {
         localStorage.getItem("allStats") !== null
           ? JSON.parse(localStorage.getItem("allStats"))
           : [],
-      openAddModal: false
+      openAddModal: false,
+      openEditModal: false,
+      validDeleteItemModal: false,
+      editItem: {},
+      editItemIndex: 0,
+      deleteItemIndex: 0
     };
     this.renderHeadlings = this.renderHeadlings.bind(this);
     this.renderRows = this.renderRows.bind(this);
     this.toggleAddModal = this.toggleAddModal.bind(this);
     this.instanceAppropriatedClass = this.instanceAppropriatedClass.bind(this);
     this.addObject = this.addObject.bind(this);
+    this.toggleEditModal = this.toggleEditModal.bind(this);
+    this.editObject = this.editObject.bind(this);
+    this.callEditModal = this.callEditModal.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.toggleValidDeleteItemModal = this.toggleValidDeleteItemModal.bind(
+      this
+    );
+    this.validDeleteItem = this.validDeleteItem.bind(this);
 
     this.labels = {
       name: "Nom",
@@ -79,17 +95,6 @@ class DataArray extends Component {
     ) {
       this.props.changePage("attractions");
     }
-
-    let attraction = new Attraction(
-      "test",
-      moment(new Date())
-        .locale("fr", localization)
-        .format("LL"),
-      20
-    );
-    this.setState(prevState => ({
-      allAttractions: [...prevState.allAttractions, attraction]
-    }));
     if (
       this.props.currentPage === "Bâtiments" &&
       this.props.currentNavItemSelected !== "batiments"
@@ -122,28 +127,51 @@ class DataArray extends Component {
     }));
   }
 
+  toggleEditModal() {
+    this.setState(prevState => ({
+      openEditModal: !prevState.openEditModal
+    }));
+  }
+
   instanceAppropriatedClass() {
     let new_obj;
     switch (this.props.currentPage) {
       case "Attractions":
-        new_obj = new Attraction("", new Date(), 0);
+        new_obj = {
+          name: "",
+          date_installation: new Date(),
+          price: 0
+        };
         break;
       case "Bâtiments":
-        new_obj = new Batiment("", new Date());
+        new_obj = {
+          name: "",
+          date_installation: new Date()
+        };
         break;
       case "Maintenances":
-        new_obj = new Maintenance(
-          new Date(),
-          new Date(),
-          new Attraction("", new Date(), 0),
-          new Employe("", "", 0, "", 0)
-        );
+        new_obj = {
+          last_date: new Date(),
+          next_date: new Date(),
+          attraction: this.state.allAttractions,
+          technicien: this.state.allPersonnel
+        };
         break;
       case "Personnel":
-        new_obj = new Employe("", "", 0, "", 0);
+        new_obj = {
+          last_name: "",
+          first_name: "",
+          age: 0,
+          job: "",
+          salary: 0
+        };
         break;
       case "Stats":
-        new_obj = new Stat(new Date(), 0, 0);
+        new_obj = {
+          date: new Date(),
+          nb_visitors: 0,
+          receipts: 0
+        };
         break;
       default:
         break;
@@ -156,11 +184,12 @@ class DataArray extends Component {
     switch (this.props.currentPage) {
       case "Attractions":
         tmp_array = [...this.state.allAttractions];
-        const new_attraction = new Attraction(
-          object.name,
-          object.date_installation,
-          object.price
-        );
+        let new_attraction = {
+          id: uuidv4(),
+          name: object.name,
+          date_installation: object.date_installation,
+          price: object.price
+        };
         tmp_array.push(new_attraction);
         this.setState(
           {
@@ -169,60 +198,241 @@ class DataArray extends Component {
           () =>
             localStorage.setItem("allAttractions", JSON.stringify(tmp_array))
         );
-        console.log("saveugar");
-
         break;
-      /*case "Bâtiments":
-        tmp_array = [...this.state.allAttractions];
-        const new_attraction = new Attraction(
-          object.name,
-          object.date_instalation,
-          object.price
+      case "Bâtiments":
+        tmp_array = [...this.state.allBatiments];
+        let new_batiment = {
+          id: uuidv4(),
+          name: object.name,
+          date_installation: object.date_installation
+        };
+        tmp_array.push(new_batiment);
+        this.setState(
+          {
+            allBatiments: tmp_array
+          },
+          () => localStorage.setItem("allBatiments", JSON.stringify(tmp_array))
         );
-        tmp_array.push(new_attraction);
-        this.setState({
-          allAttractions: tmp_array
-        });
-        break;
-      case "Maintenances":
-        tmp_array = [...this.state.allAttractions];
-        const new_attraction = new Attraction(
-          object.name,
-          object.date_instalation,
-          object.price
-        );
-        tmp_array.push(new_attraction);
-        this.setState({
-          allAttractions: tmp_array
-        });
         break;
       case "Personnel":
-        tmp_array = [...this.state.allAttractions];
-        const new_attraction = new Attraction(
-          object.name,
-          object.date_instalation,
-          object.price
+        tmp_array = [...this.state.allPersonnel];
+        let new_employe = {
+          id: uuidv4(),
+          last_name: object.last_name,
+          first_name: object.first_name,
+          age: object.age,
+          job: object.job,
+          salary: object.salary
+        };
+        tmp_array.push(new_employe);
+        this.setState(
+          {
+            allPersonnel: tmp_array
+          },
+          () => localStorage.setItem("allPersonnel", JSON.stringify(tmp_array))
         );
-        tmp_array.push(new_attraction);
-        this.setState({
-          allAttractions: tmp_array
-        });
         break;
-      case "Stats":
-        tmp_array = [...this.state.allAttractions];
-        const new_attraction = new Attraction(
-          object.name,
-          object.date_instalation,
-          object.price
+      case "Maintenances":
+        tmp_array = [...this.state.allMaintenances];
+        let new_maintenance = {
+          id: uuidv4(),
+          last_date: object.last_date,
+          next_date: object.next_date,
+          attraction: object.attraction,
+          technicien: object.technicien
+        };
+        tmp_array.push(new_maintenance);
+        this.setState(
+          {
+            allMaintenances: tmp_array
+          },
+          () =>
+            localStorage.setItem("allMaintenances", JSON.stringify(tmp_array))
         );
-        tmp_array.push(new_attraction);
-        this.setState({
-          allAttractions: tmp_array
-        });
-        break;*/
+        break;
       default:
         break;
     }
+  }
+
+  callEditModal(index) {
+    switch (this.props.currentPage) {
+      case "Attractions":
+        this.setState(
+          {
+            editItem: this.state.allAttractions[index],
+            editItemIndex: index
+          },
+          () => this.toggleEditModal()
+        );
+        break;
+      case "Bâtiments":
+        this.setState(
+          {
+            editItem: this.state.allBatiments[index],
+            editItemIndex: index
+          },
+          () => this.toggleEditModal()
+        );
+        break;
+      case "Maintenances":
+        this.setState(
+          {
+            editItem: this.state.allMaintenances[index],
+            editItemIndex: index
+          },
+          () => this.toggleEditModal()
+        );
+        break;
+      case "Personnel":
+        this.setState(
+          {
+            editItem: this.state.allPersonnel[index],
+            editItemIndex: index
+          },
+          () => this.toggleEditModal()
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  editObject(object, index) {
+    let tmp_array;
+    switch (this.props.currentPage) {
+      case "Attractions":
+        tmp_array = [...this.state.allAttractions];
+
+        tmp_array[index] = Object.assign(
+          {},
+          this.state.allAttractions[index],
+          object
+        );
+        this.setState(
+          {
+            allAttractions: tmp_array
+          },
+          () =>
+            localStorage.setItem("allAttractions", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Bâtiments":
+        tmp_array = [...this.state.allBatiments];
+
+        tmp_array[index] = Object.assign(
+          {},
+          this.state.allBatiments[index],
+          object
+        );
+        this.setState(
+          {
+            allBatiments: tmp_array
+          },
+          () => localStorage.setItem("allBatiments", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Personnel":
+        tmp_array = [...this.state.allPersonnel];
+
+        tmp_array[index] = Object.assign(
+          {},
+          this.state.allPersonnel[index],
+          object
+        );
+        this.setState(
+          {
+            allPersonnel: tmp_array
+          },
+          () => localStorage.setItem("allPersonnel", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Maintenances":
+        tmp_array = [...this.state.allMaintenances];
+
+        tmp_array[index] = Object.assign(
+          {},
+          this.state.allMaintenances[index],
+          object
+        );
+        this.setState(
+          {
+            allMaintenances: tmp_array
+          },
+          () =>
+            localStorage.setItem("allMaintenances", JSON.stringify(tmp_array))
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  deleteItem(index) {
+    this.setState({
+      deleteItemIndex: index
+    });
+    this.toggleValidDeleteItemModal();
+  }
+  toggleValidDeleteItemModal() {
+    this.setState(prevState => ({
+      validDeleteItemModal: !prevState.validDeleteItemModal
+    }));
+  }
+
+  validDeleteItem() {
+    let tmp_array;
+    switch (this.props.currentPage) {
+      case "Attractions":
+        tmp_array = [...this.state.allAttractions];
+        tmp_array.splice(this.state.deleteItemIndex, 1);
+
+        this.setState(
+          {
+            allAttractions: tmp_array
+          },
+          () =>
+            localStorage.setItem("allAttractions", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Bâtiments":
+        tmp_array = [...this.state.allBatiments];
+        tmp_array.splice(this.state.deleteItemIndex, 1);
+
+        this.setState(
+          {
+            allBatiments: tmp_array
+          },
+          () => localStorage.setItem("allBatiments", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Maintenances":
+        tmp_array = [...this.state.allMaintenances];
+        tmp_array.splice(this.state.deleteItemIndex, 1);
+
+        this.setState(
+          {
+            allMaintenances: tmp_array
+          },
+          () =>
+            localStorage.setItem("allMaintenances", JSON.stringify(tmp_array))
+        );
+        break;
+      case "Personnel":
+        tmp_array = [...this.state.allPersonnel];
+        tmp_array.splice(this.state.deleteItemIndex, 1);
+
+        this.setState(
+          {
+            allPersonnel: tmp_array
+          },
+          () => localStorage.setItem("allPersonnel", JSON.stringify(tmp_array))
+        );
+        break;
+      default:
+        break;
+    }
+    this.toggleValidDeleteItemModal();
   }
 
   renderHeadlings() {
@@ -231,7 +441,7 @@ class DataArray extends Component {
     });
     let tmp_head = [];
     tmp_head.push(
-      <thead key={`head${this.props.currentPage}`}>
+      <thead key={`head${this.props.currentPage}`} className="text-center">
         <tr>{tmp_headlings_array}</tr>
       </thead>
     );
@@ -246,11 +456,15 @@ class DataArray extends Component {
           this.state.allAttractions !== null &&
           typeof this.state.allAttractions !== "undefined"
         ) {
-          dataArray = this.state.allAttractions.map(attraction => {
+          dataArray = this.state.allAttractions.map((attraction, index) => {
             return (
               <DataArrayRow
-                key={`${attraction.getId()}`}
-                object={attraction.getAttributes()}
+                key={`${attraction.id}`}
+                object={attraction}
+                index={index}
+                callEditModal={this.callEditModal}
+                callDeleteModal={this.callDeleteModal}
+                deleteItem={this.deleteItem}
               />
             );
           });
@@ -261,11 +475,15 @@ class DataArray extends Component {
           this.state.allBatiments !== null &&
           typeof this.state.allBatiments !== "undefined"
         ) {
-          dataArray = this.state.allBatiments.map(batiment => {
+          dataArray = this.state.allBatiments.map((batiment, index) => {
             return (
               <DataArrayRow
-                key={`${batiment.getId()}`}
-                object={batiment.getAttributes()}
+                key={`${batiment.id}`}
+                object={batiment}
+                index={index}
+                callEditModal={this.callEditModal}
+                callDeleteModal={this.callDeleteModal}
+                deleteItem={this.deleteItem}
               />
             );
           });
@@ -276,11 +494,15 @@ class DataArray extends Component {
           this.state.allMaintenances !== null &&
           typeof this.state.allMaintenances !== "undefined"
         ) {
-          dataArray = this.state.allMaintenances.map(maintenance => {
+          dataArray = this.state.allMaintenances.map((maintenance, index) => {
             return (
               <DataArrayRow
-                key={`${maintenance.getId()}`}
-                object={maintenance.getAttributes()}
+                key={`${maintenance.id}`}
+                object={maintenance}
+                index={index}
+                callEditModal={this.callEditModal}
+                callDeleteModal={this.callDeleteModal}
+                deleteItem={this.deleteItem}
               />
             );
           });
@@ -291,11 +513,15 @@ class DataArray extends Component {
           this.state.allPersonnel !== null &&
           typeof this.state.allPersonnel !== "undefined"
         ) {
-          dataArray = this.state.allPersonnel.map(employe => {
+          dataArray = this.state.allPersonnel.map((employe, index) => {
             return (
               <DataArrayRow
-                key={`${employe.getId()}`}
-                object={employe.getAttributes()}
+                key={`${employe.id}`}
+                object={employe}
+                index={index}
+                callEditModal={this.callEditModal}
+                callDeleteModal={this.callDeleteModal}
+                deleteItem={this.deleteItem}
               />
             );
           });
@@ -324,28 +550,83 @@ class DataArray extends Component {
                     <Col sm="auto">{this.props.currentPage}</Col>
                     <Col sm="auto">
                       <Button
-                        color="info"
+                        color="success"
                         onClick={() => this.toggleAddModal()}
+                        disabled={
+                          this.props.currentPage === "Maintenances" &&
+                          (this.state.allAttractions.length <= 0 ||
+                            this.state.allPersonnel.length <= 0)
+                            ? true
+                            : false
+                        }
                       >
-                        Ajouter
+                        <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                        Ajouter un nouvel élément
                       </Button>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
+                  <Row className="justify-content-end mb-3">
+                    <Col sm="3">
+                      <InputGroup size="sm">
+                        <Input placeholder="Rechercher ..." />
+                      </InputGroup>
+                    </Col>
+                  </Row>
                   <Row>
-                    <Table hover responsive>
-                      {this.renderHeadlings()}
-                      {this.renderRows()}
-                    </Table>
-                    <ArrayAddModal
-                      openModal={this.state.openAddModal}
-                      toggleModal={this.toggleAddModal}
-                      modalTitle={"Ajouter"}
-                      labels={this.labels}
-                      object={this.instanceAppropriatedClass()}
-                      addObject={this.addObject}
-                    />
+                    <Col>
+                      <Table striped responsive="true">
+                        {this.renderHeadlings()}
+                        {this.renderRows()}
+                      </Table>
+                      <ArrayAddModal
+                        openModal={this.state.openAddModal}
+                        toggleModal={this.toggleAddModal}
+                        modalTitle={"Ajouter"}
+                        labels={this.labels}
+                        object={this.instanceAppropriatedClass()}
+                        addObject={this.addObject}
+                      />
+                      <ArrayEditModal
+                        openModal={this.state.openEditModal}
+                        toggleModal={this.toggleEditModal}
+                        modalTitle={"Editer un élément"}
+                        labels={this.labels}
+                        index={this.state.editItemIndex}
+                        object={this.state.editItem}
+                        editObject={this.editObject}
+                        allAttractions={this.state.allAttractions}
+                        allPersonnel={this.state.allPersonnel}
+                      />
+
+                      <Modal
+                        isOpen={this.state.validDeleteItemModal}
+                        toggle={this.toggleValidDeleteItemModal}
+                      >
+                        <ModalBody>
+                          <Container>
+                            <Row>
+                              <Col>Etes-vous sûr ?</Col>
+                            </Row>
+                          </Container>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button
+                            color="secondary"
+                            onClick={this.toggleValidDeleteItemModal}
+                          >
+                            Annuler
+                          </Button>{" "}
+                          <Button
+                            color="primary"
+                            onClick={this.validDeleteItem}
+                          >
+                            Confirmer
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </Col>
                   </Row>
                 </CardBody>
               </Card>

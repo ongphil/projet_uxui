@@ -20,35 +20,33 @@ import {
 } from "availity-reactstrap-validation";
 //import "../resources/style/ArrayAddModal.css";
 
-class ArrayAddModal extends Component {
+class ArrayEditModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      validCreateItemModal: false,
-      itemCreatedValues: {}
+      validEditItemModal: false,
+      itemEditedValues: {}
     };
     this.renderModalbody = this.renderModalBody.bind(this);
-    this.createItem = this.createItem.bind(this);
-    this.validCreateItem = this.validCreateItem.bind(this);
-    this.toggleValidCreateItemModal = this.toggleValidCreateItemModal.bind(
-      this
-    );
+    this.editItem = this.editItem.bind(this);
+    this.validEditItem = this.validEditItem.bind(this);
+    this.toggleValidEditItemModal = this.toggleValidEditItemModal.bind(this);
   }
 
-  toggleValidCreateItemModal() {
+  toggleValidEditItemModal() {
     this.setState(prevState => ({
-      validCreateItemModal: !prevState.validCreateItemModal
+      validEditItemModal: !prevState.validEditItemModal
     }));
   }
-  createItem(event, values) {
+  editItem(event, values) {
     this.setState({
-      itemCreatedValues: values
+      itemEditedValues: values
     });
-    this.toggleValidCreateItemModal();
+    this.toggleValidEditItemModal();
   }
-  validCreateItem() {
-    this.props.addObject(this.state.itemCreatedValues);
-    this.toggleValidCreateItemModal();
+  validEditItem() {
+    this.props.editObject(this.state.itemEditedValues, this.props.index);
+    this.toggleValidEditItemModal();
     this.props.toggleModal();
   }
 
@@ -80,15 +78,19 @@ class ArrayAddModal extends Component {
         // On push dans le tableau d'inputs qui sera rendered
         if (attribute === "attraction") {
           let tmp_select = [];
-          for (const attraction in this.props.object[attribute]) {
+          for (const attraction in this.props.allAttractions) {
             tmp_select.push(
-              <option key={`${this.props.object[attribute][attraction].id}`}>
-                {this.props.object[attribute][attraction].name}
+              <option
+                key={`selectedititem${
+                  this.props.allAttractions[attraction].id
+                }`}
+              >
+                {this.props.allAttractions[attraction].name}
               </option>
             );
           }
           tmp_body.push(
-            <Row key={`modaladd${attribute}`}>
+            <Row key={`modaledit${attribute}`}>
               <Col>
                 <AvField
                   type={`${input_type}`}
@@ -100,7 +102,7 @@ class ArrayAddModal extends Component {
                       ? this.props.labels[attribute]
                       : attribute
                   }`}
-                  value={this.props.object.attraction[0].name}
+                  value={this.props.object.attraction}
                 >
                   {tmp_select}
                 </AvField>
@@ -109,15 +111,17 @@ class ArrayAddModal extends Component {
           );
         } else if (attribute === "technicien") {
           let tmp_select = [];
-          for (const employe in this.props.object[attribute]) {
+          for (const employe in this.props.allPersonnel) {
             tmp_select.push(
-              <option key={`${this.props.object[attribute][employe].id}`}>
-                {this.props.object[attribute][employe].last_name}
+              <option
+                key={`selectedititem${this.props.allPersonnel[employe].id}`}
+              >
+                {this.props.allPersonnel[employe].last_name}
               </option>
             );
           }
           tmp_body.push(
-            <Row key={`modaladd${attribute}`}>
+            <Row key={`modaledit${attribute}`}>
               <Col>
                 <AvField
                   type={`${input_type}`}
@@ -129,7 +133,7 @@ class ArrayAddModal extends Component {
                       ? this.props.labels[attribute]
                       : attribute
                   }`}
-                  value={this.props.object.technicien[0].last_name}
+                  value={this.props.object.technicien}
                 >
                   {tmp_select}
                 </AvField>
@@ -138,7 +142,7 @@ class ArrayAddModal extends Component {
           );
         } else {
           tmp_body.push(
-            <Row key={`modaladd${attribute}`}>
+            <Row key={`modaledit${attribute}`}>
               <Col>
                 <AvGroup>
                   <Label for={`${attribute}`}>
@@ -160,6 +164,7 @@ class ArrayAddModal extends Component {
                         ? this.props.labels[attribute]
                         : attribute
                     }`}
+                    value={this.props.object[attribute]}
                     required
                   />
                   <AvFeedback>champ invalide !</AvFeedback>
@@ -171,7 +176,7 @@ class ArrayAddModal extends Component {
       }
     }
     return (
-      <AvForm onValidSubmit={this.createItem}>
+      <AvForm onValidSubmit={this.editItem}>
         {tmp_body}
         <Row>
           <Col>
@@ -186,7 +191,7 @@ class ArrayAddModal extends Component {
           </Col>
           <Col sm="auto" className="ml-1">
             <FormGroup>
-              <Button color="primary">Ajouter</Button>
+              <Button color="primary">Editer</Button>
             </FormGroup>
           </Col>
         </Row>
@@ -206,8 +211,8 @@ class ArrayAddModal extends Component {
           </ModalBody>
         </Modal>
         <Modal
-          isOpen={this.state.validCreateItemModal}
-          toggle={this.toggleValidCreateItemModal}
+          isOpen={this.state.validEditItemModal}
+          toggle={this.toggleValidEditItemModal}
         >
           <ModalBody>
             <Container>
@@ -217,10 +222,10 @@ class ArrayAddModal extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggleValidCreateItemModal}>
+            <Button color="secondary" onClick={this.toggleValidEditItemModal}>
               Annuler
             </Button>{" "}
-            <Button color="primary" onClick={this.validCreateItem}>
+            <Button color="primary" onClick={this.validEditItem}>
               Confirmer
             </Button>
           </ModalFooter>
@@ -230,4 +235,4 @@ class ArrayAddModal extends Component {
   }
 }
 
-export default ArrayAddModal;
+export default ArrayEditModal;
