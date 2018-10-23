@@ -1,49 +1,67 @@
 import React, { Component } from "react";
-import { Line } from "react-chartjs";
-import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
+import { Line } from "react-chartjs-2";
+import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 
 class LineGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lineData: {
-        labels: this.props.datalabels,
+        labels: this.props.datalabels.length > 0 ? this.props.datalabels : [],
         datasets: [
           {
-            fillColor: this.props.fillColor,
-            strokeColor: this.props.strokeColor,
-            data: this.props.datasets
+            backgroundColor: this.props.backgroundColor,
+            borderColor: this.props.borderColor,
+            data: this.props.datasets.length > 0 ? this.props.datasets : []
           }
         ]
       },
       options: {
-        responsive: true
+        responsive: true,
+        legend: {
+          display: false,
+          labels: {
+            fontColor: "rgb(255, 99, 132)"
+          }
+        }
       }
     };
   }
 
   render() {
+    let graph = [];
     if (this.props.datalabels.length > 0) {
-      return (
-        <div>
-          <Card>
-            <CardHeader>{this.props.title}</CardHeader>
-            <CardBody>
-              <div>
-                <Row>
-                  <Col>
-                    <Line
-                      data={this.state.lineData}
-                      options={this.state.options}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
+      graph.push(
+        <Line
+          key={this.props.title}
+          data={this.state.lineData}
+          options={this.state.options}
+          height="60vh"
+        />
+      );
+    } else {
+      graph.push(
+        <div key={this.props.title}> Aucune donnée à afficher ! </div>
       );
     }
+    return (
+      <div>
+        <Card className="cardStyle">
+          <CardBody>
+            <div>
+              <Row className="mb-4">
+                <Col>
+                  <span className="h6 statTitle">{this.props.title}</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col>{graph}</Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
   }
 }
 

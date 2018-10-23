@@ -25,3 +25,11 @@
 .red {
   color: red;
 }
+
+.statTitle {
+  color: #282c34;
+}
+
+.cardStyle {
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.05);
+}

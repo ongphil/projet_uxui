@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup, Tooltip } from "reactstrap";
+import { Button, Tooltip } from "reactstrap";
 import moment from "moment";
 import localization from "moment/locale/fr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

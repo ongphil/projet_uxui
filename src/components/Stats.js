@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Line } from "react-chartjs";
-import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import moment from "moment";
 import localization from "moment/locale/fr";
 import LineGraph from "./LineGraph";
@@ -60,23 +59,25 @@ class Stats extends Component {
     return (
       <div className="App">
         <Container className="pt-4">
-          <Row className="justify-content-center">
-            <Col sm="6">
+          <Row className="mb-4 justify-content-center">
+            <Col sm="11">
               <LineGraph
                 title="Nombres de visiteurs"
                 datalabels={this.state.allDays}
                 datasets={this.state.allVisitors}
-                fillColor={"rgba(71,136,199,0.2)"}
-                strokeColor={"rgba(71,136,199)"}
+                backgroundColor={"rgba(71,136,199,0.2)"}
+                borderColor={"rgba(71,136,199)"}
               />
             </Col>
-            <Col sm="6">
+          </Row>
+          <Row className="justify-content-center">
+            <Col sm="11">
               <LineGraph
                 title="Recettes (€)"
                 datalabels={this.state.allDays}
                 datasets={this.state.allReceipts}
-                fillColor={"rgba(199,48,52,0.2)"}
-                strokeColor={"rgba(199,48,52)"}
+                backgroundColor={"rgba(199,48,52,0.2)"}
+                borderColor={"rgba(199,48,52)"}
               />
             </Col>
           </Row>

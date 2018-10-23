@@ -11,7 +11,6 @@ import {
   Input,
   InputGroup,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter
 } from "reactstrap";
@@ -543,14 +542,21 @@ class DataArray extends Component {
       <div className="App">
         <Container className="pt-4">
           <Row className="justify-content-center">
-            <Col>
-              <Card>
+            <Col sm="11">
+              <Card className="cardStyle">
                 <CardHeader className="card-header">
-                  <Row className="justify-content-between my-2">
-                    <Col sm="auto">{this.props.currentPage}</Col>
+                  <Row className="justify-content-between my-1 align-items-center">
+                    <Col sm="auto">
+                      <span className="h6">{this.props.currentPage}</span>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <Row className="justify-content-between mt-4 mb-3">
                     <Col sm="auto">
                       <Button
-                        color="success"
+                        size="sm"
+                        color="link"
                         onClick={() => this.toggleAddModal()}
                         disabled={
                           this.props.currentPage === "Maintenances" &&
@@ -564,10 +570,6 @@ class DataArray extends Component {
                         Ajouter un nouvel élément
                       </Button>
                     </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  <Row className="justify-content-end mb-3">
                     <Col sm="3">
                       <InputGroup size="sm">
                         <Input placeholder="Rechercher ..." />
