@@ -72,7 +72,7 @@ class DataArray extends Component {
     this.labels = {
       name: "Nom",
       date_installation: `Date d'installation`,
-      price: "Prix (€)",
+      price: "Prix de l'entrée (€)",
       last_name: "Nom",
       first_name: "Prénom",
       age: "Age",
@@ -542,7 +542,7 @@ class DataArray extends Component {
     return (
       <div className="App">
         <Container className="pt-4">
-          <Row>
+          <Row className="justify-content-center">
             <Col>
               <Card>
                 <CardHeader className="card-header">
@@ -580,52 +580,60 @@ class DataArray extends Component {
                         {this.renderHeadlings()}
                         {this.renderRows()}
                       </Table>
-                      <ArrayAddModal
-                        openModal={this.state.openAddModal}
-                        toggleModal={this.toggleAddModal}
-                        modalTitle={"Ajouter"}
-                        labels={this.labels}
-                        object={this.instanceAppropriatedClass()}
-                        addObject={this.addObject}
-                      />
-                      <ArrayEditModal
-                        openModal={this.state.openEditModal}
-                        toggleModal={this.toggleEditModal}
-                        modalTitle={"Editer un élément"}
-                        labels={this.labels}
-                        index={this.state.editItemIndex}
-                        object={this.state.editItem}
-                        editObject={this.editObject}
-                        allAttractions={this.state.allAttractions}
-                        allPersonnel={this.state.allPersonnel}
-                      />
+                      {this.props.currentPage === "Maintenances" &&
+                      (this.state.allAttractions.length <= 0 ||
+                        this.state.allPersonnel.length <= 0) ? (
+                        ""
+                      ) : (
+                        <div>
+                          <ArrayAddModal
+                            openModal={this.state.openAddModal}
+                            toggleModal={this.toggleAddModal}
+                            modalTitle={"Ajouter"}
+                            labels={this.labels}
+                            object={this.instanceAppropriatedClass()}
+                            addObject={this.addObject}
+                          />
+                          <ArrayEditModal
+                            openModal={this.state.openEditModal}
+                            toggleModal={this.toggleEditModal}
+                            modalTitle={"Éditer un élément"}
+                            labels={this.labels}
+                            index={this.state.editItemIndex}
+                            object={this.state.editItem}
+                            editObject={this.editObject}
+                            allAttractions={this.state.allAttractions}
+                            allPersonnel={this.state.allPersonnel}
+                          />
 
-                      <Modal
-                        isOpen={this.state.validDeleteItemModal}
-                        toggle={this.toggleValidDeleteItemModal}
-                      >
-                        <ModalBody>
-                          <Container>
-                            <Row>
-                              <Col>Etes-vous sûr ?</Col>
-                            </Row>
-                          </Container>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button
-                            color="secondary"
-                            onClick={this.toggleValidDeleteItemModal}
+                          <Modal
+                            isOpen={this.state.validDeleteItemModal}
+                            toggle={this.toggleValidDeleteItemModal}
                           >
-                            Annuler
-                          </Button>{" "}
-                          <Button
-                            color="primary"
-                            onClick={this.validDeleteItem}
-                          >
-                            Confirmer
-                          </Button>
-                        </ModalFooter>
-                      </Modal>
+                            <ModalBody>
+                              <Container>
+                                <Row>
+                                  <Col>Etes-vous sûr ?</Col>
+                                </Row>
+                              </Container>
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button
+                                color="secondary"
+                                onClick={this.toggleValidDeleteItemModal}
+                              >
+                                Annuler
+                              </Button>{" "}
+                              <Button
+                                color="primary"
+                                onClick={this.validDeleteItem}
+                              >
+                                Confirmer
+                              </Button>
+                            </ModalFooter>
+                          </Modal>
+                        </div>
+                      )}
                     </Col>
                   </Row>
                 </CardBody>

@@ -18,6 +18,7 @@ import {
   faChartLine
 } from "@fortawesome/free-solid-svg-icons";
 import DataArray from "./components/DataArray";
+import Stats from "./components/Stats";
 import logo from "./resources/images/logo.png";
 import "./App.css";
 
@@ -59,7 +60,7 @@ class App extends Component {
             </header>
             <div>
               <Row noGutters>
-                <Col sm="2">
+                <Col sm="2" md="2">
                   <Nav className="ml-auto App-nav pt-4" vertical>
                     <NavItem>
                       <NavLink
@@ -162,7 +163,7 @@ class App extends Component {
                     </NavItem>
                   </Nav>
                 </Col>
-                <Col sm="10">
+                <Col sm="8" md="10">
                   <Route
                     exact
                     path="/attractions"
@@ -173,7 +174,7 @@ class App extends Component {
                           this.state.currentNavItemSelected
                         }
                         changePage={this.changePage}
-                        headlings={["Nom", "Date", "Prix (€)", " "]}
+                        headlings={["Nom", "Date", "Prix de l'entrée (€)", " "]}
                       />
                     )}
                   />
@@ -236,18 +237,12 @@ class App extends Component {
                     exact
                     path="/stats"
                     component={() => (
-                      <DataArray
+                      <Stats
                         currentPage="Stats"
                         currentNavItemSelected={
                           this.state.currentNavItemSelected
                         }
                         changePage={this.changePage}
-                        headlings={[
-                          "Date",
-                          "Nombre de visiteurs",
-                          "Recette",
-                          " "
-                        ]}
                       />
                     )}
                   />

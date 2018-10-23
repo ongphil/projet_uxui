@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, ButtonGroup, Tooltip } from "reactstrap";
 import moment from "moment";
 import localization from "moment/locale/fr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +9,24 @@ import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 class DataArrayRow extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      tooltipOpenEdit: false,
+      tooltipOpenDelete: false
+    };
     this.renderRow = this.renderRow.bind(this);
+    this.toggleEditTooltip = this.toggleEditTooltip.bind(this);
+    this.toggleDeleteTooltip = this.toggleDeleteTooltip.bind(this);
+  }
+
+  toggleEditTooltip() {
+    this.setState(prevState => ({
+      tooltipOpenEdit: !prevState.tooltipOpenEdit
+    }));
+  }
+  toggleDeleteTooltip() {
+    this.setState(prevState => ({
+      tooltipOpenDelete: !prevState.tooltipOpenDelete
+    }));
   }
 
   renderRow() {
@@ -53,22 +69,38 @@ class DataArrayRow extends Component {
     }
     tmp_row_data.push(
       <td key={`${this.props.object.id}buttons`} className="text-center">
+        <Tooltip
+          placement="top"
+          isOpen={this.state.tooltipOpenEdit}
+          target={`buttonEdit${this.props.index}`}
+          toggle={this.toggleEditTooltip}
+        >
+          Editer
+        </Tooltip>
         <Button
+          id={`buttonEdit${this.props.index}`}
           color="primary"
-          className="mr-3"
           size="sm"
+          className="mr-2"
           onClick={() => this.props.callEditModal(this.props.index)}
         >
-          <FontAwesomeIcon icon={faEdit} className="mr-2" />
-          Modifier
+          <FontAwesomeIcon icon={faEdit} />
         </Button>
+        <Tooltip
+          placement="top"
+          isOpen={this.state.tooltipOpenDelete}
+          target={`buttonDelete${this.props.index}`}
+          toggle={this.toggleDeleteTooltip}
+        >
+          Supprimer
+        </Tooltip>
         <Button
+          id={`buttonDelete${this.props.index}`}
           color="danger"
           size="sm"
           onClick={() => this.props.deleteItem(this.props.index)}
         >
-          <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-          Supprimer
+          <FontAwesomeIcon icon={faTrashAlt} />
         </Button>
       </td>
     );

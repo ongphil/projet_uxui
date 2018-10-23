@@ -191,7 +191,7 @@ class ArrayEditModal extends Component {
           </Col>
           <Col sm="auto" className="ml-1">
             <FormGroup>
-              <Button color="primary">Editer</Button>
+              <Button color="primary">Éditer</Button>
             </FormGroup>
           </Col>
         </Row>
