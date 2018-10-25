@@ -1,20 +1,20 @@
 .App-header {
-  background-color: #1c1e24;
+  background-color: rgb(19, 40, 62);
   height: 8vh;
 }
 
 .App-nav {
-  background-color: #282c34;
+  background-color: rgb(33, 70, 107);
   min-height: 92vh;
-  border-top: solid #333842 4px;
+  border-top: solid rgb(51, 108, 166) 4px;
 }
 
 .App-navlink:hover {
-  background-color: #3d4148;
+  background-color: rgb(51, 108, 166);
 }
 
 .App-navlink-selected {
-  background-color: #3d4148;
+  background-color: rgb(51, 108, 166);
 }
 
 .navbar-item {
@@ -32,4 +32,29 @@
 
 .cardStyle {
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+
+.bg-maincolor {
+  background-color: rgb(41, 89, 137);
+}
+
+.bg-soft-black {
+  background-color: #282c34;
+}
+
+.color-white {
+  color: white;
+}
+
+.color-main {
+  color: rgb(41, 89, 137);
+}
+
+.cursor-default {
+  cursor: context-menu;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

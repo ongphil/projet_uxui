@@ -217,7 +217,7 @@ class ArrayEditModal extends Component {
           <ModalBody>
             <Container>
               <Row>
-                <Col>Etes-vous sûr ?</Col>
+                <Col>Voulez-vous vraiment éditer cet élément ?</Col>
               </Row>
             </Container>
           </ModalBody>

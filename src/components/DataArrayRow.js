@@ -16,6 +16,7 @@ class DataArrayRow extends Component {
     this.renderRow = this.renderRow.bind(this);
     this.toggleEditTooltip = this.toggleEditTooltip.bind(this);
     this.toggleDeleteTooltip = this.toggleDeleteTooltip.bind(this);
+    this.numberWithSpaces = this.numberWithSpaces.bind(this);
   }
 
   toggleEditTooltip() {
@@ -27,6 +28,10 @@ class DataArrayRow extends Component {
     this.setState(prevState => ({
       tooltipOpenDelete: !prevState.tooltipOpenDelete
     }));
+  }
+
+  numberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 
   renderRow() {
@@ -42,13 +47,25 @@ class DataArrayRow extends Component {
           tmp_row_data.push(
             <td
               key={`${this.props.object.id}${attribute}`}
-              className="text-center"
+              className="text-center cursor-default"
             >{`${
               typeof this.props.object[attribute] != "undefined" &&
               this.props.object[attribute] != null
                 ? moment(new Date(this.props.object[attribute]))
                     .locale("fr", localization)
-                    .format("LL")
+                    .format("ll")
+                : attribute
+            }`}</td>
+          );
+        } else if (attribute === "salary") {
+          tmp_row_data.push(
+            <td
+              key={`${this.props.object.id}${attribute}`}
+              className="text-center cursor-default"
+            >{`${
+              typeof this.props.object[attribute] != "undefined" &&
+              this.props.object[attribute] != null
+                ? `${this.numberWithSpaces(this.props.object[attribute])} €`
                 : attribute
             }`}</td>
           );
@@ -56,7 +73,7 @@ class DataArrayRow extends Component {
           tmp_row_data.push(
             <td
               key={`${this.props.object.id}${attribute}`}
-              className="text-center"
+              className="text-center cursor-default"
             >{`${
               typeof this.props.object[attribute] != "undefined" &&
               this.props.object[attribute] != null

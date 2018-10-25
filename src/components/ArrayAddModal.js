@@ -212,7 +212,7 @@ class ArrayAddModal extends Component {
           <ModalBody>
             <Container>
               <Row>
-                <Col>Etes-vous sûr ?</Col>
+                <Col>Voulez-vous vraiment ajouter cet élément ?</Col>
               </Row>
             </Container>
           </ModalBody>

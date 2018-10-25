@@ -17,6 +17,7 @@ import {
   faWrench,
   faChartLine
 } from "@fortawesome/free-solid-svg-icons";
+import Home from "./components/Home";
 import DataArray from "./components/DataArray";
 import Stats from "./components/Stats";
 import logo from "./resources/images/logo.png";
@@ -164,6 +165,7 @@ class App extends Component {
                   </Nav>
                 </Col>
                 <Col sm="8" md="10">
+                  <Route exact path="/" component={() => <Home />} />
                   <Route
                     exact
                     path="/attractions"
@@ -207,7 +209,7 @@ class App extends Component {
                           "Prénom",
                           "Age",
                           "Fonction",
-                          "Salaire (€ brut)",
+                          "Salaire (brut)",
                           " "
                         ]}
                       />

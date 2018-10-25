@@ -16,6 +16,8 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
 import DataArrayRow from "./DataArrayRow";
 import ArrayAddModal from "./ArrayAddModal";
 import ArrayEditModal from "./ArrayEditModal";
@@ -441,7 +443,7 @@ class DataArray extends Component {
     let tmp_head = [];
     tmp_head.push(
       <thead key={`head${this.props.currentPage}`} className="text-center">
-        <tr>{tmp_headlings_array}</tr>
+        <tr className="cursor-default">{tmp_headlings_array}</tr>
       </thead>
     );
     return tmp_head;
@@ -547,7 +549,9 @@ class DataArray extends Component {
                 <CardHeader className="card-header">
                   <Row className="justify-content-between my-1 align-items-center">
                     <Col sm="auto">
-                      <span className="h6">{this.props.currentPage}</span>
+                      <span className="h6 cursor-default">
+                        {this.props.currentPage}
+                      </span>
                     </Col>
                   </Row>
                 </CardHeader>
@@ -567,7 +571,7 @@ class DataArray extends Component {
                         }
                       >
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                        Ajouter un nouvel élément
+                        Ajouter
                       </Button>
                     </Col>
                     <Col sm="3">
@@ -615,7 +619,9 @@ class DataArray extends Component {
                             <ModalBody>
                               <Container>
                                 <Row>
-                                  <Col>Etes-vous sûr ?</Col>
+                                  <Col>
+                                    Voulez-vous vraiment supprimer cet élément ?
+                                  </Col>
                                 </Row>
                               </Container>
                             </ModalBody>
@@ -636,6 +642,19 @@ class DataArray extends Component {
                           </Modal>
                         </div>
                       )}
+                    </Col>
+                  </Row>
+                  <Row className="mt-3 justify-content-center">
+                    <Col sm="auto">
+                      <FontAwesomeIcon
+                        icon={faArrowCircleLeft}
+                        className="cursor-pointer"
+                      />
+                      <span className="mx-4 cursor-default">1/1</span>
+                      <FontAwesomeIcon
+                        icon={faArrowCircleRight}
+                        className="cursor-pointer"
+                      />
                     </Col>
                   </Row>
                 </CardBody>
