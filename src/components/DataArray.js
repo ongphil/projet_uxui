@@ -557,10 +557,15 @@ class DataArray extends Component {
                 </CardHeader>
                 <CardBody>
                   <Row className="justify-content-between mt-4 mb-3">
+                    <Col sm="3">
+                      <InputGroup size="sm">
+                        <Input placeholder="Rechercher ..." />
+                      </InputGroup>
+                    </Col>
                     <Col sm="auto">
                       <Button
                         size="sm"
-                        color="link"
+                        color="primary"
                         onClick={() => this.toggleAddModal()}
                         disabled={
                           this.props.currentPage === "Maintenances" &&
@@ -573,11 +578,6 @@ class DataArray extends Component {
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
                         Ajouter
                       </Button>
-                    </Col>
-                    <Col sm="3">
-                      <InputGroup size="sm">
-                        <Input placeholder="Rechercher ..." />
-                      </InputGroup>
                     </Col>
                   </Row>
                   <Row>

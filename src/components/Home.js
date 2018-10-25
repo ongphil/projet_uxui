@@ -30,7 +30,7 @@ class Home extends Component {
     }, 1000);
 
     this.nb_visitorsID = setInterval(() => {
-      if (this.state.nb_visitors >= 1000) {
+      if (this.state.nb_visitors >= 10000) {
         clearInterval(this.nb_visitorsID);
       }
       this.setState(
@@ -42,7 +42,7 @@ class Home extends Component {
     }, 4000);
 
     this.receiptsID = setInterval(() => {
-      if (this.state.receipts >= 30000) {
+      if (this.state.receipts >= 1000000) {
         clearInterval(this.receiptsID);
       }
       this.setState(
@@ -52,6 +52,12 @@ class Home extends Component {
         () => localStorage.setItem("receipts", this.state.receipts)
       );
     }, 4000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+    clearInterval(this.nb_visitorsID);
+    clearInterval(this.receiptsID);
   }
 
   getRandomInt(min, max) {

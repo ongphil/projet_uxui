@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 
 class SingleStatCard extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   numberWithSpaces(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }

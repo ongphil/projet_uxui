@@ -8,12 +8,47 @@ class Stats extends Component {
   constructor(props) {
     super(props);
 
+    localStorage.removeItem("allStats");
+
+    const initialStats = [
+      {
+        day: new Date("10/25/2018"),
+        nb_visitors: 22153,
+        receipts: 1032045
+      },
+      {
+        day: new Date("10/26/2018"),
+        nb_visitors: 18224,
+        receipts: 735400
+      },
+      {
+        day: new Date("10/27/2018"),
+        nb_visitors: 20123,
+        receipts: 924145
+      },
+      {
+        day: new Date("10/28/2018"),
+        nb_visitors: 43123,
+        receipts: 2653989
+      },
+      {
+        day: new Date("10/29/2018"),
+        nb_visitors: 48923,
+        receipts: 2898456
+      },
+      {
+        day: new Date("10/30/2018"),
+        nb_visitors: 17234,
+        receipts: 489345
+      }
+    ];
+
     this.state = {
       allStats:
         localStorage.getItem("allStats") !== null &&
         typeof localStorage.getItem("allStats") !== "undefined"
           ? JSON.parse(localStorage.getItem("allStats"))
-          : [],
+          : initialStats,
       allDays: [],
       allVisitors: [],
       allReceipts: []
@@ -44,16 +79,6 @@ class Stats extends Component {
       allReceipts: tmp_receipts
     };
   }
-
-  /*componentDidMount() {
-    let tmp_array = [
-      { day: new Date("10/02/2018"), nb_visitors: 400, receipts: 20000 },
-      { day: new Date("11/02/2018"), nb_visitors: 245, receipts: 11420 },
-      { day: new Date("12/02/2018"), nb_visitors: 453, receipts: 22543 },
-      { day: new Date("11/02/2018"), nb_visitors: 376, receipts: 17234 }
-    ];
-    localStorage.setItem("allStats", JSON.stringify(tmp_array));
-  }*/
 
   render() {
     return (
