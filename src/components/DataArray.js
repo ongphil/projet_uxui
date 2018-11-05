@@ -10,6 +10,7 @@ import {
   Button,
   Input,
   InputGroup,
+  InputGroupAddon,
   Modal,
   ModalBody,
   ModalFooter
@@ -18,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import DataArrayRow from "./DataArrayRow";
 import ArrayAddModal from "./ArrayAddModal";
 import ArrayEditModal from "./ArrayEditModal";
@@ -443,7 +445,7 @@ class DataArray extends Component {
     let tmp_head = [];
     tmp_head.push(
       <thead key={`head${this.props.currentPage}`} className="text-center">
-        <tr className="cursor-default">{tmp_headlings_array}</tr>
+        <tr className="cursor-pointer h6">{tmp_headlings_array}</tr>
       </thead>
     );
     return tmp_head;
@@ -549,7 +551,7 @@ class DataArray extends Component {
                 <CardHeader className="card-header">
                   <Row className="justify-content-between my-1 align-items-center">
                     <Col sm="auto">
-                      <span className="h6 cursor-default">
+                      <span className="h5 cursor-default">
                         {this.props.currentPage}
                       </span>
                     </Col>
@@ -557,9 +559,15 @@ class DataArray extends Component {
                 </CardHeader>
                 <CardBody>
                   <Row className="justify-content-between mt-4 mb-3">
-                    <Col sm="3">
+                    <Col sm="3" className="align-items-center">
                       <InputGroup size="sm">
-                        <Input placeholder="Rechercher ..." />
+                        <InputGroupAddon addonType="prepend">
+                          <Button className="searchButton" size="sm">
+                            <FontAwesomeIcon icon={faSearch} />
+                          </Button>
+                        </InputGroupAddon>
+
+                        <Input placeholder="Recherche" />
                       </InputGroup>
                     </Col>
                     <Col sm="auto">

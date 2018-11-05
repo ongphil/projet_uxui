@@ -58,3 +58,12 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.searchButton {
+  background-color: rgb(220, 220, 220);
+  border-color: rgb(205, 205, 205);
+}
+.searchButton:hover {
+  background-color: rgb(200, 200, 200);
+  border-color: rgb(205, 205, 205);
+}
